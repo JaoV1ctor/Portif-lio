@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0A0A0A;
+  --color-surface: #1A1A1A;
+  --color-border-subtle: #333333;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #A3A3A3;
+  --color-accent-blue: #3B82F6;
+  --color-accent-green: #10B981;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-text-primary antialiased selection:bg-accent-blue/30;
+  }
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.glass-card {
+  @apply bg-surface border border-border-subtle rounded-2xl p-6 transition-all duration-300 hover:border-accent-blue/50;
+}
+
+.glass-effect {
+  backdrop-filter: blur(16px) saturate(180%);
+  background: rgba(26, 26, 26, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+@keyframes border-glow {
+  0% { border-color: rgba(59, 130, 246, 0.2); }
+  50% { border-color: rgba(16, 185, 129, 0.5); }
+  100% { border-color: rgba(59, 130, 246, 0.2); }
+}
+
+.animate-glow {
+  animation: border-glow 3s infinite;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.scroll-progress-bar {
+  @apply fixed top-0 left-0 h-1 bg-accent-blue z-50;
+  transition: width 100ms linear;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Remove default white background from Chrome Autofill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: white !important;
+}
