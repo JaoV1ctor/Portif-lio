@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { ArrowRight, Mouse } from 'lucide-react';
+import { ArrowRight, Mouse, Sparkles } from 'lucide-react';
 import Typewriter from './Typewriter';
 import { useLanguage } from '@/context/LanguageContext';
 import { InteractiveRobotSpline } from './InteractiveRobotSpline';
@@ -12,6 +12,8 @@ export default function Hero() {
   const { scrollY } = useScroll();
 
   const [showHeavyEffects, setShowHeavyEffects] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(true);
+  const userManuallyToggled = useRef(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -23,13 +25,19 @@ export default function Hero() {
       // Verify device capability
       const checkPerformance = () => {
         const isMobile = window.innerWidth < 768;
-        const logicalCores = navigator.hardwareConcurrency || 4;
-        
-        // Define high capability as Desktop && more than 4 cores
-        if (!isMobile && logicalCores > 4) {
-          setShowHeavyEffects(true);
-        } else {
+        setIsMobileDevice(isMobile);
+
+        if (isMobile) {
+          // Never show heavy spline on mobile
           setShowHeavyEffects(false);
+        } else if (!userManuallyToggled.current) {
+          // For PCs, base requirement is 8 logical cores
+          const logicalCores = navigator.hardwareConcurrency || 4;
+          if (logicalCores >= 8) {
+            setShowHeavyEffects(true);
+          } else {
+            setShowHeavyEffects(false);
+          }
         }
       };
 
@@ -71,11 +79,19 @@ export default function Hero() {
         </div>
       )}
 
-      {/* Fallback Mobile Background Glow */}
+      {/* Fallback Lightweight Elegant Background */}
       {!showHeavyEffects && (
-        <div className="absolute inset-0 -z-20 opacity-30 w-full h-full pointer-events-none overflow-hidden">
-          <div className="absolute -top-1/4 -right-1/4 w-[300px] h-[300px] bg-accent-blue/40 rounded-full blur-[120px]" />
-          <div className="absolute top-1/2 -left-1/4 w-[300px] h-[300px] bg-accent-green/30 rounded-full blur-[100px]" />
+        <div className="absolute inset-0 -z-20 opacity-40 mix-blend-screen pointer-events-none overflow-hidden">
+          {/* Subtle slow moving grid */}
+          <div className="absolute inset-x-0 inset-y-[-50%] w-full h-[200%] bg-[linear-gradient(rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.05)_1px,transparent_1px)] bg-[length:4rem_4rem] animate-[grid_60s_linear_infinite]"
+               style={{
+                  maskImage: 'radial-gradient(ellipse 60% 60% at 50% 50%, #000 10%, transparent 100%)',
+                  WebkitMaskImage: 'radial-gradient(ellipse 60% 60% at 50% 50%, #000 10%, transparent 100%)'
+               }}
+          />
+          {/* Parallax Blobs for color */}
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-accent-blue/20 rounded-full blur-[120px] animate-[pulse_8s_ease-in-out_infinite]" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent-green/20 rounded-full blur-[120px] animate-[pulse_8s_ease-in-out_infinite] delay-[4000ms]" />
         </div>
       )}
 
@@ -171,6 +187,21 @@ export default function Hero() {
             >
               {t('hero.cta.contact')}
             </motion.a>
+            
+            {!isMobileDevice && (
+              <motion.button 
+                onClick={() => {
+                  userManuallyToggled.current = true;
+                  setShowHeavyEffects(!showHeavyEffects);
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="border border-white/10 hover:border-accent-blue/50 text-white hover:text-accent-blue px-6 py-4 rounded-full font-bold transition-all bg-white/5 hover:bg-accent-blue/10 backdrop-blur-md flex items-center gap-3"
+              >
+                <Sparkles className={`w-5 h-5 ${showHeavyEffects ? 'text-accent-green' : 'text-text-secondary'}`} />
+                {showHeavyEffects ? "Desativar Visual 3D" : "Ativar Visual 3D"}
+              </motion.button>
+            )}
           </motion.div>
         </motion.div>
       </div>
