@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight, Mouse } from 'lucide-react';
 import Typewriter from './Typewriter';
