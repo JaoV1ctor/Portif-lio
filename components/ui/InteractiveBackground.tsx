@@ -1,21 +1,20 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export function InteractiveBackground() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isMounted, setIsMounted] = useState(false);
+  const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsMounted(true);
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
-      });
+      if (glowRef.current) {
+        glowRef.current.style.background = `radial-gradient(800px circle at ${e.clientX}px ${e.clientY}px, rgba(14,165,233,0.04), transparent 70%)`;
+      }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
@@ -36,10 +35,8 @@ export function InteractiveBackground() {
 
       {/* Luz rastreadora extremamente suave (imperceptível mas charmosa) */}
       <div 
+        ref={glowRef}
         className="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-100"
-        style={{
-          background: `radial-gradient(800px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(14,165,233,0.04), transparent 70%)`,
-        }}
       />
 
       <style dangerouslySetInnerHTML={{__html: `

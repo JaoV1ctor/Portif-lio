@@ -11,13 +11,31 @@ export default function Hero() {
   const { t, language } = useLanguage();
   const { scrollY } = useScroll();
 
-  // Fix scroll restoration bug in next.js returning to middle of page
+  const [showHeavyEffects, setShowHeavyEffects] = useState(false);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
       }
       window.scrollTo(0, 0);
+
+      // Verify device capability
+      const checkPerformance = () => {
+        const isMobile = window.innerWidth < 768;
+        const logicalCores = navigator.hardwareConcurrency || 4;
+        
+        // Define high capability as Desktop && more than 4 cores
+        if (!isMobile && logicalCores > 4) {
+          setShowHeavyEffects(true);
+        } else {
+          setShowHeavyEffects(false);
+        }
+      };
+
+      checkPerformance();
+      window.addEventListener('resize', checkPerformance);
+      return () => window.removeEventListener('resize', checkPerformance);
     }
   }, []);
   
@@ -33,21 +51,33 @@ export default function Hero() {
     <section className="relative min-h-[100vh] flex flex-col justify-center items-start overflow-hidden w-full">
       
       {/* Background Parallax Layer - Blur Blobs */}
-      <motion.div 
-        style={{ y: bgY }}
-        className="absolute inset-0 -z-20 opacity-20 w-full h-full pointer-events-none"
-      >
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-blue/20 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-green/20 rounded-full blur-[120px]" />
-      </motion.div>
+      {showHeavyEffects && (
+        <motion.div 
+          style={{ y: bgY }}
+          className="absolute inset-0 -z-20 opacity-20 w-full h-full pointer-events-none"
+        >
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 md:w-[600px] md:h-[600px] bg-accent-blue/30 rounded-full blur-[150px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 md:w-[600px] md:h-[600px] bg-accent-green/30 rounded-full blur-[150px]" />
+        </motion.div>
+      )}
 
       {/* Interactive Robot - Absolute Background */}
-      <div className="absolute inset-0 z-0 pointer-events-auto">
-        <InteractiveRobotSpline 
-          scene="https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode" 
-          className="w-full h-full object-cover" 
-        />
-      </div>
+      {showHeavyEffects && (
+        <div className="absolute inset-0 z-0 pointer-events-auto">
+          <InteractiveRobotSpline 
+            scene="https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode" 
+            className="w-full h-full object-cover" 
+          />
+        </div>
+      )}
+
+      {/* Fallback Mobile Background Glow */}
+      {!showHeavyEffects && (
+        <div className="absolute inset-0 -z-20 opacity-30 w-full h-full pointer-events-none overflow-hidden">
+          <div className="absolute -top-1/4 -right-1/4 w-[300px] h-[300px] bg-accent-blue/40 rounded-full blur-[120px]" />
+          <div className="absolute top-1/2 -left-1/4 w-[300px] h-[300px] bg-accent-green/30 rounded-full blur-[100px]" />
+        </div>
+      )}
 
       {/* Foreground Content - Pointer Events None, so mouse passes to robot, except on the box */}
       <div className="relative z-10 w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-20 pointer-events-none flex flex-col justify-center items-start min-h-screen">
