@@ -257,7 +257,7 @@ export default function Terminal() {
 
   return (
     <div 
-      className="w-full h-[650px] bg-[#0b0c10]/80 backdrop-blur-3xl border-2 border-white/10 rounded-2xl overflow-hidden font-mono text-sm shadow-[0_30px_100px_-20px_rgba(14,165,233,0.3)] flex flex-col group/terminal relative hover:border-white/30 transition-all duration-500"
+      className="w-full h-[450px] md:h-[650px] bg-[#0b0c10]/80 backdrop-blur-3xl border-2 border-white/10 rounded-2xl overflow-hidden font-mono text-sm shadow-[0_30px_100px_-20px_rgba(14,165,233,0.3)] flex flex-col group/terminal relative hover:border-white/30 transition-all duration-500"
       onClick={() => {
         if (gameStatus === 'idle') inputRef.current?.focus();
       }}
