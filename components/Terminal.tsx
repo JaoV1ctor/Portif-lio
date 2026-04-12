@@ -2,11 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Typewriter from './Typewriter';
 import { useLanguage } from '@/context/LanguageContext';
+import { portfolioData } from '@/lib/data';
 
 export default function Terminal() {
   const { t } = useLanguage();
   const [input, setInput] = useState('');
-  const [history, setHistory] = useState<{ text: string; type: 'cmd' | 'output' }[]>([]);
+  const [history, setHistory] = useState<{ text: string | React.ReactNode; type: 'cmd' | 'output' }[]>([]);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -164,8 +165,8 @@ export default function Terminal() {
       gameState.current = { y: 0, vy: 0, obstacles: [], speed: 0.8, ticks: 0, status: 'playing' };
       scoreRef.current = 0;
       setGameStatus('playing');
-    } else if (['help', 'about', 'skills', 'projects', 'contact', 'social', 'ls', 'date', 'whoami', 'sudo', 'exit'].includes(cmd)) {
-      let output = '';
+    } else if (['help', 'about', 'skills', 'projects', 'contact', 'ls', 'date', 'whoami', 'sudo', 'resume', 'resume.pdf', 'exit'].includes(cmd)) {
+      let output: string | React.ReactNode = '';
       switch (cmd) {
         case 'help': 
           output = t('terminal.help') + '\n\n* Easter Egg: Try "dino" or "play"!'; 
@@ -173,12 +174,44 @@ export default function Terminal() {
         case 'about': output = t('terminal.about'); break;
         case 'skills': output = t('terminal.skills'); break;
         case 'projects': output = t('terminal.projects'); break;
-        case 'contact': output = t('terminal.contact'); break;
-        case 'social': output = t('terminal.social'); break;
+        case 'contact': 
+          output = (
+            <div className="mt-2 space-y-1">
+              <p className="mb-2">{t('terminal.contact')}</p>
+              {portfolioData.socials.map(s => {
+                let displayUrl = s.url;
+                if (s.platform === 'Mail' && s.url.includes('mailto:')) {
+                   displayUrl = s.url.replace('mailto:', '');
+                } else if (s.platform === 'Mail' && s.url.includes('mail.google.com')) {
+                   displayUrl = 'vibeagency.oficial@gmail.com';
+                }
+                
+                return (
+                  <div key={s.platform} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                    <span className="text-accent-green font-bold w-full sm:w-24">[{s.platform}]</span>
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-accent-blue hover:underline break-all">
+                      {displayUrl}
+                    </a>
+                  </div>
+                );
+              })}
+            </div>
+          );
+          break;
         case 'ls': output = t('terminal.ls'); break;
         case 'date': output = new Date().toLocaleString(); break;
         case 'whoami': output = t('terminal.whoami'); break;
         case 'sudo': output = t('terminal.sudo'); break;
+        case 'resume':
+        case 'resume.pdf': 
+            output = t('terminal.resume'); 
+            setTimeout(() => {
+              const link = document.createElement('a');
+              link.href = '/resume.pdf';
+              link.download = 'Joao_Victor_Curriculo.pdf';
+              link.click();
+            }, 1000);
+            break;
         case 'exit': output = t('terminal.exit'); break;
       }
       setHistory(prev => [
@@ -324,7 +357,7 @@ export default function Terminal() {
                 transition={{ duration: 0.2 }}
                 className={line.type === 'cmd' ? 'text-accent-blue' : 'text-text-secondary'}
               >
-                {line.type === 'output' && i === history.length - 1 ? (
+                {line.type === 'output' && i === history.length - 1 && typeof line.text === 'string' ? (
                   <Typewriter text={line.text} delay={20} showCursor={false} />
                 ) : (
                   line.text
