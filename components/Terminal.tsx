@@ -161,26 +161,35 @@ export default function Terminal() {
       setHistory([]);
     } else if (['play', 'dino'].includes(cmd)) {
       setHistory(prev => [...prev, { text: `> ${input}`, type: 'cmd' }]);
-      // Launch Game
       gameState.current = { y: 0, vy: 0, obstacles: [], speed: 0.8, ticks: 0, status: 'playing' };
       scoreRef.current = 0;
       setGameStatus('playing');
-    } else if (['help', 'about', 'projects', 'contact', 'ls', 'date', 'whoami'].includes(cmd)) {
+    } else if (['help', 'about', 'skills', 'projects', 'contact', 'social', 'ls', 'date', 'whoami', 'sudo', 'exit'].includes(cmd)) {
       let output = '';
       switch (cmd) {
-        case 'help': output = t('terminal.help') + '\n* Dica Oculta: Digite "dino" ou "play" para um easter egg!'; break;
+        case 'help': 
+          output = t('terminal.help') + '\n\n* Easter Egg: Try "dino" or "play"!'; 
+          break;
         case 'about': output = t('terminal.about'); break;
+        case 'skills': output = t('terminal.skills'); break;
         case 'projects': output = t('terminal.projects'); break;
         case 'contact': output = t('terminal.contact'); break;
-        case 'ls': output = 'projects/  about/  contact/  skills/'; break;
+        case 'social': output = t('terminal.social'); break;
+        case 'ls': output = t('terminal.ls'); break;
         case 'date': output = new Date().toLocaleString(); break;
-        case 'whoami': output = 'guest@joaovictor.dev'; break;
+        case 'whoami': output = t('terminal.whoami'); break;
+        case 'sudo': output = t('terminal.sudo'); break;
+        case 'exit': output = t('terminal.exit'); break;
       }
       setHistory(prev => [
         ...prev, 
         { text: `> ${input}`, type: 'cmd' },
         { text: output, type: 'output' }
       ]);
+      
+      if (cmd === 'exit') {
+        setTimeout(() => setHistory([]), 2000);
+      }
     } else if (cmd !== '') {
       setHistory(prev => [
         ...prev, 
