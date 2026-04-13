@@ -2,25 +2,25 @@
 
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Briefcase } from 'lucide-react';
 import ProjectCard from './ProjectCard';
 import Reveal from './Reveal';
 import { useLanguage } from '@/context/LanguageContext';
-import type { GithubRepo } from '@/app/page';
+import type { UnifiedProject } from '@/app/page';
 
 interface ProjectsProps {
-  repos: GithubRepo[];
+  repos: UnifiedProject[];
 }
 
 export default function Projects({ repos }: ProjectsProps) {
   const { t } = useLanguage();
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCategory, setActiveCategory] = useState('Professional');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   // Derive categories from github languages dynamically
-  const languagesSet = new Set(repos.map(r => r.language).filter(Boolean));
-  // Most used languages first or just sorted alphabetically
+  const languagesSet = new Set(repos.map(r => r.language).filter(Boolean) as string[]);
+  // Sort alphabetically
   const uniqueLanguages = Array.from(languagesSet).sort();
 
   useEffect(() => {
@@ -35,12 +35,16 @@ export default function Projects({ repos }: ProjectsProps) {
   }, [activeCategory]);
 
   const categories = useMemo(() => [
-    { id: 'All', label: t('projects.all') || 'Todos' },
-    ...uniqueLanguages.map(lang => ({ id: lang, label: lang }))
+    { id: 'Professional', label: 'Projetos Profissionais', isSpecial: true },
+    { id: 'All', label: t('projects.all') || 'Todos', isSpecial: false },
+    ...uniqueLanguages.map(lang => ({ id: lang, label: lang, isSpecial: false }))
   ], [t, uniqueLanguages]);
 
   const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = { All: repos.length };
+    const counts: Record<string, number> = { 
+      All: repos.length,
+      Professional: repos.filter(p => p.isProfessional).length
+    };
     repos.forEach(p => {
       if (p.language) {
         counts[p.language] = (counts[p.language] || 0) + 1;
@@ -51,6 +55,7 @@ export default function Projects({ repos }: ProjectsProps) {
 
   const filteredProjects = useMemo(() => {
     if (activeCategory === 'All') return repos;
+    if (activeCategory === 'Professional') return repos.filter(p => p.isProfessional);
     return repos.filter(p => p.language === activeCategory);
   }, [activeCategory, repos]);
 
@@ -166,20 +171,25 @@ export default function Projects({ repos }: ProjectsProps) {
                       setActiveCategory(cat.id);
                       setCurrentIndex(0);
                     }}
-                    className={`relative px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors duration-300 flex items-center gap-2.5 z-10 whitespace-nowrap shrink-0 ${
-                      isActive ? 'text-white' : 'text-text-secondary hover:text-white'
+                    className={`relative px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2.5 z-10 whitespace-nowrap shrink-0 ${
+                      isActive 
+                        ? 'text-white' 
+                        : (cat.isSpecial ? 'text-amber-400 hover:text-white border border-amber-500/30 bg-amber-500/5' : 'text-text-secondary hover:text-white border border-transparent')
                     }`}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="activeCategory"
-                        className="absolute inset-0 bg-accent-blue rounded-xl -z-10 shadow-lg shadow-accent-blue/30"
+                        className={`absolute inset-0 rounded-xl -z-10 shadow-lg ${cat.isSpecial ? 'bg-gradient-to-r from-amber-600 to-amber-500 shadow-amber-500/30' : 'bg-accent-blue shadow-accent-blue/30'}`}
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                       />
                     )}
+                    {cat.isSpecial && <Briefcase className="w-4 h-4" />}
                     <span className="relative">{cat.label}</span>
                     <span className={`relative text-[10px] px-2 py-0.5 rounded-full font-mono transition-colors duration-300 ${
-                      isActive ? 'bg-white/20 text-white' : 'bg-white/5 text-text-secondary'
+                      isActive 
+                        ? 'bg-white/20 text-white' 
+                        : (cat.isSpecial ? 'bg-amber-500/20 text-amber-300' : 'bg-white/5 text-text-secondary')
                     }`}>
                       {categoryCounts[cat.id] || 0}
                     </span>

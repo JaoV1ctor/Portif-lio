@@ -11,32 +11,77 @@ import BackToTop from '@/components/BackToTop';
 
 export const revalidate = 3600;
 
-export type GithubRepo = {
-  id: number;
+export type UnifiedProject = {
+  id: string | number;
   name: string;
   description: string;
-  html_url: string;
-  homepage: string | null;
-  stargazers_count: number;
-  forks_count: number;
-  language: string;
+  html_url?: string;
+  homepage?: string | null;
+  stargazers_count?: number;
+  forks_count?: number;
+  language?: string;
   created_at: string;
-  updated_at: string;
-  topics: string[];
+  updated_at?: string;
+  topics?: string[];
+  isProfessional?: boolean;
+  resultMetric?: string;
 };
 
-async function getLiveProjects(): Promise<GithubRepo[]> {
+// Mapeia o tipo original do Github para facilitar tipagem interna caso precise
+export type GithubRepo = UnifiedProject;
+
+import { portfolioData } from '@/data/portfolio';
+
+async function getLiveProjects(): Promise<UnifiedProject[]> {
   try {
     const res = await fetch('https://api.github.com/users/JaoV1ctor/repos?sort=created&per_page=30', {
       next: { revalidate: 3600 }
     });
-    if (!res.ok) return [];
     
-    const repos: GithubRepo[] = await res.json();
-    return repos.filter(repo => !(repo as any).fork).sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    let ghRepos: UnifiedProject[] = [];
+    if (res.ok) {
+      const repos = await res.json();
+      ghRepos = repos
+        .filter((repo: any) => !repo.fork)
+        .map((repo: any) => ({
+          ...repo,
+          isProfessional: false
+        }));
+    }
+    
+    const professionalProjects: UnifiedProject[] = portfolioData.professionalProjects.map(p => ({
+      id: p.id,
+      name: p.title,
+      description: p.description,
+      homepage: p.liveUrl,
+      language: p.technologies[0] || 'Web',
+      topics: p.technologies,
+      created_at: p.date,
+      isProfessional: true,
+      resultMetric: p.resultMetric
+    }));
+
+    // Combina e ordena por data (mais recentes primeiro)
+    const allProjects = [...professionalProjects, ...ghRepos].sort((a, b) => 
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+
+    return allProjects;
   } catch (error) {
     console.error('Error fetching github data:', error);
-    return [];
+    
+    // Fallback: retorna apenas os projetos profissionais locais em caso de erro
+    return portfolioData.professionalProjects.map(p => ({
+      id: p.id,
+      name: p.title,
+      description: p.description,
+      homepage: p.liveUrl,
+      language: p.technologies[0] || 'Web',
+      topics: p.technologies,
+      created_at: p.date,
+      isProfessional: true,
+      resultMetric: p.resultMetric
+    }));
   }
 }
 
