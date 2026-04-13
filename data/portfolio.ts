@@ -41,7 +41,7 @@ export const portfolioData: PortfolioData = {
       resultMetric: 'Automação de 100% dos agendamentos via WhatsApp',
       technologies: ['Next.js', 'TypeScript', 'Supabase', 'Gemini AI', 'Meta API'],
       description: 'Bot inteligente para barbearia integrado diretamente ao WhatsApp. O sistema utiliza a inteligência da API do Google Gemini para interpretar linguagem natural, tirar dúvidas e realizar agendamentos integrados a um banco de dados (Supabase) de forma totalmente automatizada, escalável e dentro do Meta Cloud API.',
-      liveUrl: 'https://gucortes.vercel.app/',
+      liveUrl: 'https://gucortes.vercel.app',
       isProfessional: true
     }
   ]
