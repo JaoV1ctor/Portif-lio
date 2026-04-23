@@ -35,7 +35,13 @@ import { portfolioData } from '@/data/portfolio';
 
 async function getLiveProjects(): Promise<UnifiedProject[]> {
   try {
+    const headers: HeadersInit = {};
+    if (process.env.GITHUB_TOKEN) {
+      headers.Authorization = `token ${process.env.GITHUB_TOKEN}`;
+    }
+
     const res = await fetch('https://api.github.com/users/JaoV1ctor/repos?sort=created&per_page=30', {
+      headers,
       next: { revalidate: 3600 }
     });
     
