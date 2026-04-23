@@ -18,8 +18,9 @@ export default function Projects({ repos }: ProjectsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Derive categories from github languages dynamically
-  const languagesSet = new Set(repos.map(r => r.language).filter(Boolean) as string[]);
+  // Derive categories from github languages dynamically (only normal projects)
+  const normalRepos = repos.filter(r => !r.isProfessional);
+  const languagesSet = new Set(normalRepos.map(r => r.language).filter(Boolean) as string[]);
   // Sort alphabetically
   const uniqueLanguages = Array.from(languagesSet).sort();
 
@@ -41,11 +42,12 @@ export default function Projects({ repos }: ProjectsProps) {
   ], [t, uniqueLanguages]);
 
   const categoryCounts = useMemo(() => {
+    const normalRepos = repos.filter(p => !p.isProfessional);
     const counts: Record<string, number> = { 
-      All: repos.length,
+      All: normalRepos.length,
       Professional: repos.filter(p => p.isProfessional).length
     };
-    repos.forEach(p => {
+    normalRepos.forEach(p => {
       if (p.language) {
         counts[p.language] = (counts[p.language] || 0) + 1;
       }
@@ -54,9 +56,11 @@ export default function Projects({ repos }: ProjectsProps) {
   }, [repos]);
 
   const filteredProjects = useMemo(() => {
-    if (activeCategory === 'All') return repos;
     if (activeCategory === 'Professional') return repos.filter(p => p.isProfessional);
-    return repos.filter(p => p.language === activeCategory);
+    
+    const normalRepos = repos.filter(p => !p.isProfessional);
+    if (activeCategory === 'All') return normalRepos;
+    return normalRepos.filter(p => p.language === activeCategory);
   }, [activeCategory, repos]);
 
   const [itemsPerPage, setItemsPerPage] = useState(3);
