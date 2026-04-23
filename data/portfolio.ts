@@ -35,6 +35,16 @@ export const portfolioData: PortfolioData = {
   ],
   professionalProjects: [
     {
+      id: 'atlas-containers',
+      date: '2026-04-22',
+      title: 'Atlas Containers Platform',
+      resultMetric: 'Evolução de MVP para Plataforma B2B de Alta Conversão',
+      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'WhatsApp API'],
+      description: 'Desenvolvimento e refinamento de uma plataforma B2B profissional. O projeto transformou um MVP inicial em um sistema pronto para produção, com foco em consistência UI/UX premium e integração de comunicação direta para otimizar o funil de contato com o cliente.',
+      liveUrl: 'https://mvp-containers.vercel.app/', 
+      isProfessional: true
+    },
+    {
       id: 'gu-cortes',
       date: '2026-04-05',
       title: 'Gu Cortes - Atendimento IA',

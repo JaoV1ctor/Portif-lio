@@ -1,4 +1,5 @@
 import Hero from '@/components/Hero';
+// Forçando re-renderização para limpar o cache local
 import { InteractiveBackground } from '@/components/ui/InteractiveBackground';
 import TechStack from '@/components/TechStack';
 import Projects from '@/components/Projects';
@@ -9,7 +10,7 @@ import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ScrollProgress';
 import BackToTop from '@/components/BackToTop';
 
-export const revalidate = 3600;
+// Cache removido para atualização em tempo real
 
 export type UnifiedProject = {
   id: string | number;
