@@ -25,14 +25,27 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     const lang = project.language?.toLowerCase() || '';
     const name = project.name.toLowerCase();
     
-    if (name.includes('ai') || name.includes('gpt') || name.includes('bot') || name.includes('llm')) {
-      return { Icon: Bot, colorClass: 'text-accent-green', hoverClass: 'group-hover:text-accent-green', shadowRgb: '16,185,129', badgeColor: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' };
-    } else if (name.includes('design') || name.includes('ui') || lang === 'css') {
+    if (lang === 'css') {
       return { Icon: Palette, colorClass: 'text-purple-400', hoverClass: 'group-hover:text-purple-400', shadowRgb: '192,132,252', badgeColor: 'bg-purple-500/10 border-purple-500/20 text-purple-400' };
-    } else if (lang === 'typescript' || lang === 'javascript' || lang === 'html') {
-      return { Icon: Monitor, colorClass: 'text-accent-blue', hoverClass: 'group-hover:text-accent-blue', shadowRgb: '59,130,246', badgeColor: 'bg-accent-blue/10 border-accent-blue/20 text-accent-blue' };
+    } else if (lang === 'typescript') {
+      return { Icon: Monitor, colorClass: 'text-blue-400', hoverClass: 'group-hover:text-blue-400', shadowRgb: '96,165,250', badgeColor: 'bg-blue-500/10 border-blue-500/20 text-blue-400' };
+    } else if (lang === 'javascript') {
+      return { Icon: Monitor, colorClass: 'text-yellow-400', hoverClass: 'group-hover:text-yellow-400', shadowRgb: '250,204,21', badgeColor: 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400' };
+    } else if (lang === 'html') {
+      return { Icon: Monitor, colorClass: 'text-orange-400', hoverClass: 'group-hover:text-orange-400', shadowRgb: '251,146,60', badgeColor: 'bg-orange-500/10 border-orange-500/20 text-orange-400' };
+    } else if (lang === 'python') {
+      return { Icon: Code, colorClass: 'text-teal-400', hoverClass: 'group-hover:text-teal-400', shadowRgb: '45,212,191', badgeColor: 'bg-teal-500/10 border-teal-500/20 text-teal-400' };
+    } else if (lang === 'java') {
+      return { Icon: Code, colorClass: 'text-red-400', hoverClass: 'group-hover:text-red-400', shadowRgb: '248,113,113', badgeColor: 'bg-red-500/10 border-red-500/20 text-red-400' };
+    } else if (lang === 'php') {
+      return { Icon: Code, colorClass: 'text-indigo-400', hoverClass: 'group-hover:text-indigo-400', shadowRgb: '129,140,248', badgeColor: 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400' };
+    } else if (name.includes('ai') || name.includes('gpt') || name.includes('bot') || name.includes('llm')) {
+      return { Icon: Bot, colorClass: 'text-accent-green', hoverClass: 'group-hover:text-accent-green', shadowRgb: '16,185,129', badgeColor: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' };
+    } else if (name.includes('design') || name.includes('ui')) {
+      return { Icon: Palette, colorClass: 'text-purple-400', hoverClass: 'group-hover:text-purple-400', shadowRgb: '192,132,252', badgeColor: 'bg-purple-500/10 border-purple-500/20 text-purple-400' };
     }
-    return { Icon: Code, colorClass: 'text-accent-blue', hoverClass: 'group-hover:text-accent-blue', shadowRgb: '59,130,246', badgeColor: 'bg-accent-blue/10 border-accent-blue/20 text-accent-blue' };
+    
+    return { Icon: Code, colorClass: 'text-slate-400', hoverClass: 'group-hover:text-slate-400', shadowRgb: '148,163,184', badgeColor: 'bg-slate-500/10 border-slate-500/20 text-slate-400' };
   };
 
   const { Icon, colorClass, hoverClass, shadowRgb, badgeColor } = getThemeVars();
