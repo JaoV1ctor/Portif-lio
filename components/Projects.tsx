@@ -109,15 +109,24 @@ export default function Projects({ repos }: ProjectsProps) {
   };
 
   useEffect(() => {
-    const handleResize = () => {
+    const applySize = () => {
       if (window.innerWidth < 768) setItemsPerPage(1);
       else if (window.innerWidth < 1024) setItemsPerPage(2);
       else setItemsPerPage(3);
     };
 
-    handleResize();
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(applySize, 150);
+    };
+
+    applySize();
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      clearTimeout(resizeTimeout);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const maxIndex = Math.max(0, filteredProjects.length - itemsPerPage);
@@ -178,22 +187,22 @@ export default function Projects({ repos }: ProjectsProps) {
                     className={`relative px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2.5 z-10 whitespace-nowrap shrink-0 ${
                       isActive 
                         ? 'text-white' 
-                        : (cat.isSpecial ? 'text-amber-400 hover:text-white border border-amber-500/30 bg-amber-500/5' : 'text-text-secondary hover:text-white border border-transparent')
+                        : (cat.isSpecial ? 'text-accent-green hover:text-white border border-accent-green/30 bg-accent-green/5' : 'text-text-secondary hover:text-white border border-transparent')
                     }`}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="activeCategory"
-                        className={`absolute inset-0 rounded-xl -z-10 shadow-lg ${cat.isSpecial ? 'bg-gradient-to-r from-amber-600 to-amber-500 shadow-amber-500/30' : 'bg-accent-blue shadow-accent-blue/30'}`}
+                        className={`absolute inset-0 rounded-xl -z-10 shadow-lg ${cat.isSpecial ? 'bg-accent-green shadow-accent-green/30' : 'bg-accent-blue shadow-accent-blue/30'}`}
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                       />
                     )}
                     {cat.isSpecial && <Briefcase className="w-4 h-4" />}
                     <span className="relative">{cat.label}</span>
-                    <span className={`relative text-[10px] px-2 py-0.5 rounded-full font-mono transition-colors duration-300 ${
+                    <span className={`relative text-2xs px-2 py-0.5 rounded-full font-mono transition-colors duration-300 ${
                       isActive 
                         ? 'bg-white/20 text-white' 
-                        : (cat.isSpecial ? 'bg-amber-500/20 text-amber-300' : 'bg-white/5 text-text-secondary')
+                        : (cat.isSpecial ? 'bg-accent-green/20 text-accent-green' : 'bg-white/5 text-text-secondary')
                     }`}>
                       {categoryCounts[cat.id] || 0}
                     </span>

@@ -45,7 +45,7 @@ export default function Footer() {
 
         {/* Bottom Bar: Copyright & Back to Top */}
         <div className="w-full flex items-center justify-between pt-10 mt-4 border-t border-white/5 flex-col md:flex-row gap-6">
-          <p className="text-text-secondary/70 text-[10px] uppercase tracking-[0.3em] font-mono">
+          <p className="text-text-secondary/70 text-2xs uppercase tracking-[0.3em] font-mono">
             {t('footer.copy')}
           </p>
         </div>

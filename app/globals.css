@@ -8,6 +8,8 @@
   --color-text-secondary: #A3A3A3;
   --color-accent-blue: #3B82F6;
   --color-accent-green: #10B981;
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 0.875rem;
 }
 
 @layer base {

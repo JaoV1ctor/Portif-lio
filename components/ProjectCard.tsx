@@ -13,12 +13,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   // Determine theme based on language/tags/type
   const getThemeVars = () => {
     if (project.isProfessional) {
-      return { 
-        Icon: ShieldCheck, 
-        colorClass: 'text-amber-400', 
-        hoverClass: 'group-hover:text-amber-400', 
-        shadowRgb: '251,191,36', 
-        badgeColor: 'bg-amber-500/10 border-amber-500/20 text-amber-400' 
+      return {
+        Icon: ShieldCheck,
+        colorClass: 'text-accent-green',
+        hoverClass: 'group-hover:text-accent-green',
+        shadowRgb: '16,185,129',
+        badgeColor: 'bg-accent-green/10 border-accent-green/20 text-accent-green'
       };
     }
 
@@ -77,13 +77,13 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           
           {/* Top Section: Icon and Links */}
           <div className="flex justify-between items-start mb-6" style={{ transform: "translateZ(40px)" }}>
-            <div className={`p-4 rounded-2xl bg-white/5 border border-white/10 ${project.isProfessional ? 'group-hover:bg-amber-500/10 group-hover:border-amber-500/30' : 'group-hover:bg-white/10'} transition-colors duration-500 shadow-xl`}>
+            <div className={`p-4 rounded-2xl bg-white/5 border border-white/10 ${project.isProfessional ? 'group-hover:bg-accent-green/10 group-hover:border-accent-green/30' : 'group-hover:bg-white/10'} transition-colors duration-500 shadow-xl`}>
               <Icon className={`w-12 h-12 ${colorClass}`} />
             </div>
-            
+
             <div className="flex gap-3 pointer-events-auto items-center">
               {project.isProfessional && (
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold tracking-widest uppercase">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent-green/10 border border-accent-green/20 text-accent-green text-xs font-bold tracking-widest uppercase">
                   <span>Client Work</span>
                 </div>
               )}
@@ -93,7 +93,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                 </a>
               )}
               {project.homepage && (
-                <a href={project.homepage} target="_blank" rel="noopener noreferrer" className={`p-2 rounded-full transition-colors flex items-center justify-center border ${project.isProfessional ? 'bg-amber-500/10 hover:bg-amber-500/20 hover:text-white border-amber-500/30 text-amber-400' : 'bg-accent-blue/10 hover:bg-accent-blue/20 border-accent-blue/20 text-accent-blue'}`} title="Ver Site">
+                <a href={project.homepage} target="_blank" rel="noopener noreferrer" className={`p-2 rounded-full transition-colors flex items-center justify-center border ${project.isProfessional ? 'bg-accent-green/10 hover:bg-accent-green/20 hover:text-white border-accent-green/30 text-accent-green' : 'bg-accent-blue/10 hover:bg-accent-blue/20 border-accent-blue/20 text-accent-blue'}`} title="Ver Site">
                   <ArrowUpRight className="w-6 h-6" />
                 </a>
               )}
@@ -124,8 +124,8 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
             {project.isProfessional && project.resultMetric && (
               <div className="flex items-start gap-2 text-sm font-semibold text-text-secondary mb-4 drop-shadow-sm bg-surface p-3 rounded-xl border border-white/5">
-                <Trophy className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
-                <span className="text-amber-500/90">{project.resultMetric}</span>
+                <Trophy className="w-4 h-4 text-accent-green mt-0.5 shrink-0" />
+                <span className="text-accent-green/90">{project.resultMetric}</span>
               </div>
             )}
 
@@ -137,12 +137,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           {/* Tools & Languages */}
           <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-border-subtle/50" style={{ transform: "translateZ(15px)" }}>
             {project.language && (
-              <span className={`text-[10px] uppercase font-bold tracking-widest border px-3 py-1.5 rounded-lg ${badgeColor}`}>
+              <span className={`text-2xs uppercase font-bold tracking-widest border px-3 py-1.5 rounded-lg ${badgeColor}`}>
                 {project.language}
               </span>
             )}
-            {project.topics && project.topics.map(tech => (
-              <span key={tech} className="text-[10px] uppercase font-bold tracking-widest bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg text-text-secondary group-hover:text-white group-hover:border-white/20 transition-colors">
+            {project.topics && project.topics.filter(tech => tech !== project.language).map(tech => (
+              <span key={tech} className="text-2xs uppercase font-bold tracking-widest bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg text-text-secondary group-hover:text-white group-hover:border-white/20 transition-colors">
                 {tech}
               </span>
             ))}

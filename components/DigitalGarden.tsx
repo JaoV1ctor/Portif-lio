@@ -36,7 +36,7 @@ function TILCard({ note, language }: { note: TILNote, language: string }) {
             {/* Header card */}
             <div className="p-6 border-b border-white/5 bg-white/[0.02]">
               <div className="flex justify-between items-start mb-3">
-                <span className="text-[10px] uppercase font-bold tracking-widest bg-accent-green/10 text-accent-green border border-accent-green/20 px-2.5 py-1 rounded-md">
+                <span className="text-2xs uppercase font-bold tracking-widest bg-accent-green/10 text-accent-green border border-accent-green/20 px-2.5 py-1 rounded-md">
                   {note.topic}
                 </span>
                 <span className="flex items-center gap-1.5 text-xs font-semibold text-text-secondary opacity-70">
@@ -53,7 +53,7 @@ function TILCard({ note, language }: { note: TILNote, language: string }) {
             <div className="p-6 pt-5 flex-grow relative bg-[#050505] rounded-b-[32px] overflow-hidden group/code">
               <div className="absolute top-3 right-4 flex items-center gap-2">
                  <Code2 className="w-4 h-4 text-white/40" />
-                 <span className="text-[10px] font-mono uppercase tracking-wider text-white/40 mr-2">{note.language}</span>
+                 <span className="text-2xs font-mono uppercase tracking-wider text-white/40 mr-2">{note.language}</span>
                  <button 
                    onClick={handleCopy}
                    className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all opacity-0 group-hover/code:opacity-100 disabled:opacity-100 flex items-center justify-center transform active:scale-95 z-20"

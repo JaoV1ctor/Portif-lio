@@ -55,11 +55,11 @@ const TechCard = ({ tool, index }: { tool: Skill, index: number }) => {
             <div className="text-xs text-white/90 group-hover:text-white group-focus-within:text-white transition-all duration-500 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transform translate-y-4 group-hover:translate-y-0 group-focus-within:translate-y-0 px-3 flex flex-col items-center w-full bg-white/10 py-3 rounded-xl border border-white/20 backdrop-blur-md shadow-inner space-y-2">
               <p className="drop-shadow-sm font-medium">{tool.description[language]}</p>
               {tool.relatedProjectIds.length > 0 ? (
-                <div className="text-[10px] text-accent-green font-mono pt-2 border-t border-white/20 font-semibold tracking-wider w-full">
+                <div className="text-2xs text-accent-green font-mono pt-2 border-t border-white/20 font-semibold tracking-wider w-full">
                   » {language === 'pt' ? 'Evidência' : 'Evidence'}: {tool.relatedProjectIds.length} {language === 'pt' ? 'projeto(s)' : 'project(s)'}
                 </div>
               ) : (
-                <div className="text-[10px] text-white/60 font-mono pt-2 border-t border-white/20 tracking-wider w-full">
+                <div className="text-2xs text-white/60 font-mono pt-2 border-t border-white/20 tracking-wider w-full">
                   — {language === 'pt' ? 'Estudo/Pesquisa' : 'Study/Research'}
                 </div>
               )}

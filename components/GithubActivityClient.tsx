@@ -78,11 +78,11 @@ export default function GithubActivityClient({ profile, repos }: Props) {
                 <div className="flex gap-6 mt-4 pt-4 border-t border-white/10 w-full justify-center">
                   <div className="text-center">
                     <p className="text-2xl font-black text-white">{profile.public_repos}</p>
-                    <p className="text-[10px] text-text-secondary uppercase tracking-widest font-bold">{language === 'pt' ? 'Repositórios' : 'Repos'}</p>
+                    <p className="text-2xs text-text-secondary uppercase tracking-widest font-bold">{language === 'pt' ? 'Repositórios' : 'Repos'}</p>
                   </div>
                   <div className="text-center">
                     <p className="text-2xl font-black text-white">{profile.followers}</p>
-                    <p className="text-[10px] text-text-secondary uppercase tracking-widest font-bold">{language === 'pt' ? 'Seguidores' : 'Followers'}</p>
+                    <p className="text-2xs text-text-secondary uppercase tracking-widest font-bold">{language === 'pt' ? 'Seguidores' : 'Followers'}</p>
                   </div>
                 </div>
               </div>

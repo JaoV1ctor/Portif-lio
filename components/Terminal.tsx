@@ -273,12 +273,12 @@ export default function Terminal() {
             <div className="w-3.5 h-3.5 rounded-full bg-[#FFBD2E] border border-[#DEA123] shadow-inner" />
             <div className="w-3.5 h-3.5 rounded-full bg-[#27C93F] border border-[#1AAB29] shadow-inner" />
           </div>
-          <div className="text-white/70 font-medium text-[11px] uppercase tracking-wider ml-4 bg-black/40 px-3 py-1 rounded-full border border-white/5 shadow-inner">
+          <div className="text-white/70 font-medium text-2xs uppercase tracking-wider ml-4 bg-black/40 px-3 py-1 rounded-full border border-white/5 shadow-inner">
             joaovictor@matrix ~ bash
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="text-white/30 text-[10px] uppercase font-bold tracking-widest hidden md:block">80x24</div>
+          <div className="text-white/30 text-2xs uppercase font-bold tracking-widest hidden md:block">80x24</div>
           <div className="w-2.5 h-2.5 rounded-full bg-accent-green animate-pulse shadow-[0_0_10px_theme(colors.accent.green)]" />
         </div>
       </div>

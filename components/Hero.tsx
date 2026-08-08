@@ -189,17 +189,18 @@ export default function Hero() {
             </motion.a>
             
             {!isMobileDevice && (
-              <motion.button 
+              <motion.button
                 onClick={() => {
                   userManuallyToggled.current = true;
                   setShowHeavyEffects(!showHeavyEffects);
                 }}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.95 }}
-                className="border border-white/10 hover:border-accent-blue/50 text-white hover:text-accent-blue px-6 py-4 rounded-full font-bold transition-all bg-white/5 hover:bg-accent-blue/10 backdrop-blur-md flex items-center gap-3"
+                title={showHeavyEffects ? "Desativar Visual 3D" : "Ativar Visual 3D"}
+                aria-label={showHeavyEffects ? "Desativar Visual 3D" : "Ativar Visual 3D"}
+                className="ml-1 self-center w-11 h-11 rounded-full border border-white/10 hover:border-accent-blue/40 bg-transparent hover:bg-white/5 backdrop-blur-md flex items-center justify-center transition-all shrink-0"
               >
-                <Sparkles className={`w-5 h-5 ${showHeavyEffects ? 'text-accent-green' : 'text-text-secondary'}`} />
-                {showHeavyEffects ? "Desativar Visual 3D" : "Ativar Visual 3D"}
+                <Sparkles className={`w-4 h-4 ${showHeavyEffects ? 'text-accent-green' : 'text-text-secondary'}`} />
               </motion.button>
             )}
           </motion.div>
@@ -211,7 +212,7 @@ export default function Hero() {
         style={{ opacity: indicatorOpacity, y: indicatorY }}
         className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20 pointer-events-none"
       >
-        <span className="text-[9px] uppercase tracking-[0.4em] font-mono text-white/40">Scroll</span>
+        <span className="text-2xs uppercase tracking-[0.4em] font-mono text-white/40">Scroll</span>
         <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-white/20 to-accent-blue overflow-hidden relative">
           <motion.div 
             animate={{ y: ["-100%", "200%"] }}

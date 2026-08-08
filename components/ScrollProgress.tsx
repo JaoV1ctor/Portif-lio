@@ -53,7 +53,7 @@ export default function ScrollProgress() {
             className="text-accent-blue"
           />
         </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-[10px] font-mono text-text-secondary">
+        <span className="absolute inset-0 flex items-center justify-center text-2xs font-mono text-text-secondary">
           {percentage}%
         </span>
       </div>
